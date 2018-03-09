@@ -4,6 +4,7 @@
 
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
+import * as PropTypes from "prop-types";
 
 import getDomMarkerIcon from "./utils/get-dom-marker-icon";
 import getMarkerIcon from "./utils/get-marker-icon";
@@ -22,8 +23,8 @@ export interface MarkerContext {
 // export the Marker React component from this module
 export class Marker extends React.Component<MarkerProps, object> {
   // define the context types that are passed down from a <HEREMap> instance
-  public static contextTypes = {
-    map: React.PropTypes.object,
+  public static contextTypes: React.ValidationMap<{ map: any }> = {
+    map: PropTypes.object
   };
 
   public context: MarkerContext;

@@ -1,6 +1,7 @@
 import { debounce, uniqueId } from "lodash";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as PropTypes from "prop-types";
 
 import HMapMethods from "./mixins/h-map-methods";
 import cache, { onAllLoad } from "./utils/cache";
@@ -37,8 +38,8 @@ export interface HEREMapChildContext {
 export class HEREMap
   extends React.Component<HEREMapProps, HEREMapState>
   implements React.ChildContextProvider<HEREMapChildContext> {
-  public static childContextTypes = {
-    map: React.PropTypes.object,
+  public static childContextTypes: React.ValidationMap<{ map: any }> = {
+    map: PropTypes.object
   };
 
   // add typedefs for the HMapMethods mixin
@@ -51,6 +52,7 @@ export class HEREMap
   public state: HEREMapState = {};
 
   private debouncedResizeMap: any;
+  private hereMapEl: HTMLElement = null;
 
   constructor(props: HEREMapProps, context: object) {
     super(props, context);
@@ -90,10 +92,8 @@ export class HEREMap
         ppi: hidpi ? 320 : 72,
       });
 
-      const hereMapEl = ReactDOM.findDOMNode(this);
-
       const map = new H.Map(
-        hereMapEl.querySelector(".map-container"),
+        this.hereMapEl.querySelector(".map-container"),
         defaultLayers.normal.map,
         {
           center,
@@ -144,7 +144,7 @@ export class HEREMap
     const { children } = this.props;
 
     return (
-      <div>
+      <div ref={(el) => this.hereMapEl = el}>
         <div
           className="map-container"
           id={`map-container-${uniqueId()}`}
