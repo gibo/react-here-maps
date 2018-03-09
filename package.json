@@ -3,6 +3,7 @@
   "version": "0.4.0",
   "description": "React.js HERE Maps component",
   "main": "dist/main.js",
+  "typings": "dist/main.d.ts",
   "scripts": {
     "test:prod": "npm run karma && npm run coverage && npm run coverage:post",
     "test": "npm run karma && npm run coverage",
