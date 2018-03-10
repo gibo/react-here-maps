@@ -2,9 +2,9 @@
 // large numbers of markers of this type can be added to the map
 // very quickly and efficiently
 
+import * as PropTypes from "prop-types";
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
-import * as PropTypes from "prop-types";
 
 import getDomMarkerIcon from "./utils/get-dom-marker-icon";
 import getMarkerIcon from "./utils/get-marker-icon";
@@ -24,7 +24,7 @@ export interface MarkerContext {
 export class Marker extends React.Component<MarkerProps, object> {
   // define the context types that are passed down from a <HEREMap> instance
   public static contextTypes: React.ValidationMap<{ map: any }> = {
-    map: PropTypes.object
+    map: PropTypes.object,
   };
 
   public context: MarkerContext;
