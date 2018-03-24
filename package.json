@@ -1,5 +1,5 @@
 {
-  "name": "react-here-maps",
+  "name": "@dotcs/react-here-maps",
   "version": "0.4.0",
   "description": "React.js HERE Maps component",
   "main": "dist/main.js",
