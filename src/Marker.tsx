@@ -24,7 +24,7 @@ export interface MarkerContext {
 export class Marker extends React.Component<MarkerProps, object> {
   // define the context types that are passed down from a <HEREMap> instance
   public static contextTypes: React.ValidationMap<{ map: any }> = {
-    map: PropTypes.object,
+    map: PropTypes.object
   };
 
   public context: MarkerContext;
@@ -36,8 +36,13 @@ export class Marker extends React.Component<MarkerProps, object> {
     if (nextProps.lat !== this.props.lat || nextProps.lng !== this.props.lng) {
       this.setPosition({
         lat: nextProps.lat,
-        lng: nextProps.lng,
+        lng: nextProps.lng
       });
+    }
+
+    const nextChildren = (nextProps as any).children;
+    if (this.props.children !== nextChildren) {
+      this.updateMarkerIcon();
     }
   }
 
@@ -51,7 +56,7 @@ export class Marker extends React.Component<MarkerProps, object> {
   }
 
   public render(): JSX.Element {
-    const {map} = this.context;
+    const { map } = this.context;
 
     if (map && !this.marker) {
       this.addMarkerToMap();
@@ -61,50 +66,44 @@ export class Marker extends React.Component<MarkerProps, object> {
   }
 
   private addMarkerToMap() {
-    const {
-      map,
-    } = this.context;
+    const { map } = this.context;
 
-    const {
-      children,
-      bitmap,
-      lat,
-      lng,
-    } = this.props;
+    const { lat, lng } = this.props;
 
     let marker: H.map.DomMarker | H.map.Marker;
 
-    if (React.Children.count(children) > 0) {
-      // if children are provided, we render the provided react
-      // code to an html string
-      const html = ReactDOMServer.renderToStaticMarkup((
-        <div className="dom-marker">
-          {children}
-        </div>
-      ));
-
-      // we then get a dom icon object from the wrapper method
-      const icon = getDomMarkerIcon(html);
-
-      // then create a dom marker instance and attach it to the map,
-      // provided via context
-      marker = new H.map.DomMarker({lat, lng}, {icon});
-      map.addObject(marker);
-    } else if (bitmap) {
-      // if we have an image url and no react children, create a
-      // regular icon instance
-      const icon = getMarkerIcon(bitmap);
-
-      // then create a normal marker instance and attach it to the map
-      marker = new H.map.Marker({lat, lng}, {icon});
-      map.addObject(marker);
+    const icon = this.getIcon();
+    if (icon !== null) {
+      if (icon instanceof H.map.DomIcon) {
+        marker = new H.map.DomMarker({ lat, lng }, { icon });
+      } else {
+        marker = new H.map.Marker({ lat, lng }, { icon });
+      }
     } else {
-      // create a default marker at the provided location
-      marker = new H.map.Marker({lat, lng});
-      map.addObject(marker);
+      marker = new H.map.Marker({ lat, lng });
     }
+    map.addObject(marker);
 
     this.marker = marker;
+  }
+
+  private updateMarkerIcon() {
+    const icon = this.getIcon();
+    this.marker.setIcon(icon);
+  }
+
+  private getIcon(): H.map.DomIcon | H.map.Icon | null {
+    const { bitmap, children } = this.props;
+    if (React.Children.count(children) > 0) {
+      const html = ReactDOMServer.renderToStaticMarkup(
+        <div className="dom-marker">{children}</div>
+      );
+      return getDomMarkerIcon(html);
+    } else if (bitmap) {
+      return getMarkerIcon(bitmap);
+    } else {
+      return null;
+    }
   }
 
   private setPosition(point: H.geo.IPoint): void {
