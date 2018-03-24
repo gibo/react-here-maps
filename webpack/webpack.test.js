@@ -25,22 +25,22 @@ module.exports = {
        */
       {
         test: /\.ts(x?)$/,
-        loader: "babel-loader!ts-loader",
+        loader: "babel-loader!ts-loader"
       },
       /**
        * These loaders are used in other environments as well.
        */
       {
         test: /\.json$/,
-        loader: "json-loader",
+        loader: "json-loader"
       },
       {
         test: /\.html$/,
-        loader: "html-loader",
+        loader: "html-loader"
       },
       {
         test: /\.scss$/,
-        loader: "style-loader!css-loader!sass-loader",
+        loader: "style-loader!css-loader!sass-loader"
       },
       /**
        * Instruments TS source files for subsequent code coverage.
@@ -50,17 +50,16 @@ module.exports = {
         enforce: "post",
         test: /\.ts(x?)$/,
         loader: "istanbul-instrumenter-loader",
-        exclude: [
-          "node_modules",
-          /\.(e2e|spec)\.ts$/
-        ]
-      },
-    ],
+        exclude: ["node_modules", /\.(e2e|spec)\.ts$/]
+      }
+    ]
   },
 
   plugins: [
-    new webpack.NormalModuleReplacementPlugin(/^\.\/package$/, function(result) {
-      if(/cheerio/.test(result.context)) {
+    new webpack.NormalModuleReplacementPlugin(/^\.\/package$/, function(
+      result
+    ) {
+      if (/cheerio/.test(result.context)) {
         result.request = "./package.json";
       }
     })
@@ -68,7 +67,8 @@ module.exports = {
   externals: {
     "react/addons": true,
     "react/lib/ExecutionEnvironment": true,
+    "react-test-renderer/shallow": true,
     "react/lib/ReactContext": "window",
     "text-encoding": "window"
-  },
+  }
 };
