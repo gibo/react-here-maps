@@ -26,3 +26,4 @@ webpack
 karma.conf.js
 tsconfig.json
 tslint.json
+dist-tar
