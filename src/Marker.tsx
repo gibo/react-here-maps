@@ -88,6 +88,9 @@ export class Marker extends React.Component<MarkerProps, object> {
   }
 
   private updateMarkerIcon() {
+    if (!this.marker) {
+      return;
+    }
     const icon = this.getIcon();
     this.marker.setIcon(icon);
   }
