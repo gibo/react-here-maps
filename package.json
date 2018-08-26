@@ -1,5 +1,5 @@
 {
-  "name": "@dotcs/react-here-maps",
+  "name": "react-here-maps",
   "version": "0.6.0",
   "description": "React.js HERE Maps component",
   "main": "dist/main.js",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Josh-ES/react-here-maps.git"
+    "url": "git+https://github.com/gibo/react-here-maps.git"
   },
   "keywords": [
     "React.js",
